@@ -1,4 +1,5 @@
 using InventoryManagementSystem.DataAccess.Data;
+using InventoryManagementSystem.DataAccess.DbInitializer;
 using InventoryManagementSystem.DataAccess.Repository;
 using InventoryManagementSystem.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 #region Custom Services
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 #endregion
 
 // Add Swagger with XML comments
@@ -39,6 +41,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// this function will create the database if not created
+// it also migrate all pending migrations if any 
+// and will seed the database with data if any
+SeedDatabase(); 
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -46,3 +53,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+void SeedDatabase()
+{
+    using (IServiceScope scope = app.Services.CreateScope())
+    {
+        IDbInitializer dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}
