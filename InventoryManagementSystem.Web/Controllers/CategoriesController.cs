@@ -16,95 +16,171 @@ namespace InventoryManagementSystem.Web.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        /// <summary>
+        /// Get all categories.
+        /// </summary>
+        /// <returns>A list of all categories with their item count.</returns>
+        /// <response code="200">Returns the list of categories</response>
+        /// <response code="500">If an internal server error occurs</response>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<CategoryDto>), 200)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> GetAllCategories()
         {
-            var categories = await _unitOfWork.Category.GetAllAsync(includeProperties: "Items");
-
-            var categoryDtos = categories.Select(c => new CategoryDto
+            try
             {
-                Id = c.Id,
-                Name = c.Name,
-                Items = c.Items.Select(i => new ItemDto
+                var categories = await _unitOfWork.Category.GetAllAsync();
+
+                var categoryDtos = categories.Select(c => new CategoryDto
                 {
-                    Id = i.Id,
-                    Name = i.Name,
-                    Description = i.Description,
-                    Price = i.Price,
-                    Quantity = i.Quantity,
-                    CategoryId = i.CategoryId,
-                    CategoryName = c.Name
-                }).ToList()
-            });
-            return Ok(categoryDtos);
+                    Id = c.Id,
+                    Name = c.Name
+                });
+
+                return Ok(categoryDtos);
+            }
+            catch (Exception ex)
+            {
+                // Log exception (you can use a logging framework like Serilog or NLog here)
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
+        /// <summary>
+        /// Get a category by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to retrieve.</param>
+        /// <returns>The category if found, otherwise a NotFound result.</returns>
+        /// <response code="200">Returns the category</response>
+        /// <response code="404">If the category is not found</response>
+        /// <response code="500">If an internal server error occurs</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(CategoryDto), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> GetCategoryById(int id)
         {
-            var category = await _unitOfWork.Category.GetByIdAsync(id, includeProperties: "Items");
-            if (category == null)
-                return NotFound();
-
-            var categoryDto = new CategoryDto
+            try
             {
-                Id = category.Id,
-                Name = category.Name,
-                Items = category.Items.Select(i => new ItemDto
-                {
-                    Id = i.Id,
-                    Name = i.Name,
-                    Description = i.Description,
-                    Price = i.Price,
-                    Quantity = i.Quantity,
-                    CategoryId = i.CategoryId,
-                    CategoryName = category.Name
-                }).ToList()
-            };
+                var category = await _unitOfWork.Category.GetByIdAsync(id);
+                if (category == null)
+                    return NotFound();
 
-            return Ok(categoryDto);
+                var categoryDto = new CategoryDto
+                {
+                    Id = category.Id,
+                    Name = category.Name
+                };
+
+                return Ok(categoryDto);
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
+        /// <summary>
+        /// Create a new category.
+        /// </summary>
+        /// <param name="categoryDto">The category data to create.</param>
+        /// <returns>A CreatedAtAction result with the newly created category.</returns>
+        /// <response code="201">If the category is successfully created</response>
+        /// <response code="400">If the category data is invalid</response>
+        /// <response code="500">If an internal server error occurs</response>
         [HttpPost]
+        [ProducesResponseType(typeof(TbCategory), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto categoryDto)
         {
-            if (categoryDto == null)
-                return BadRequest();
+            try
+            {
+                if (categoryDto == null)
+                    return BadRequest();
 
-            var category = new TbCategory { Name = categoryDto.Name };
+                var category = new TbCategory { Name = categoryDto.Name };
 
-            await _unitOfWork.Category.AddAsync(category);
-            await _unitOfWork.SaveAsync();
+                await _unitOfWork.Category.AddAsync(category);
+                await _unitOfWork.SaveAsync();
 
-            return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category);
+                return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category);
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
+        /// <summary>
+        /// Update an existing category by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to update.</param>
+        /// <param name="categoryDto">The updated category data.</param>
+        /// <returns>A NoContent result if the update was successful, or a NotFound result if the category does not exist.</returns>
+        /// <response code="204">If the category was successfully updated</response>
+        /// <response code="400">If the category data is invalid</response>
+        /// <response code="404">If the category is not found</response>
+        /// <response code="500">If an internal server error occurs</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto categoryDto)
         {
-            var category = await _unitOfWork.Category.GetByIdAsync(id);
-            if (category == null)
-                return NotFound();
+            try
+            {
+                var category = await _unitOfWork.Category.GetByIdAsync(id);
+                if (category == null)
+                    return NotFound();
 
-            category.Name = categoryDto.Name;
+                category.Name = categoryDto.Name;
 
-            _unitOfWork.Category.Update(category);
-            await _unitOfWork.SaveAsync();
+                _unitOfWork.Category.Update(category);
+                await _unitOfWork.SaveAsync();
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
+        /// <summary>
+        /// Delete a category by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to delete.</param>
+        /// <returns>A NoContent result if the category was deleted, or a NotFound result if the category does not exist.</returns>
+        /// <response code="204">If the category was successfully deleted</response>
+        /// <response code="404">If the category is not found</response>
+        /// <response code="500">If an internal server error occurs</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            var category = await _unitOfWork.Category.GetByIdAsync(id);
-            if (category == null)
-                return NotFound();
+            try
+            {
+                var category = await _unitOfWork.Category.GetByIdAsync(id);
+                if (category == null)
+                    return NotFound();
 
-            _unitOfWork.Category.Remove(category);
-            await _unitOfWork.SaveAsync();
+                _unitOfWork.Category.Remove(category);
+                await _unitOfWork.SaveAsync();
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }
