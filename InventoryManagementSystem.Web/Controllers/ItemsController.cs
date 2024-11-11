@@ -30,8 +30,8 @@ namespace InventoryManagementSystem.Web.Controllers
         /// <response code="200">Returns the list of items.</response>
         /// <response code="500">Internal server error.</response>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ItemDto>), 200)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(IEnumerable<ItemDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllItems()
         {
             try
@@ -53,7 +53,7 @@ namespace InventoryManagementSystem.Web.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
 
@@ -66,9 +66,9 @@ namespace InventoryManagementSystem.Web.Controllers
         /// <response code="404">Item not found.</response>
         /// <response code="500">Internal server error.</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ItemDto), 200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(ItemDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetItemById(int id)
         {
             try
@@ -93,7 +93,7 @@ namespace InventoryManagementSystem.Web.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
 
@@ -106,9 +106,9 @@ namespace InventoryManagementSystem.Web.Controllers
         /// <response code="400">Bad request.</response>
         /// <response code="500">Internal server error.</response>
         [HttpPost]
-        [ProducesResponseType(typeof(TbItem), 201)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(TbItem), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateItem([FromBody] CreateItemDto itemDto)
         {
             if (!ModelState.IsValid)
@@ -132,7 +132,7 @@ namespace InventoryManagementSystem.Web.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
 
@@ -146,10 +146,10 @@ namespace InventoryManagementSystem.Web.Controllers
         /// <response code="400">Bad request.</response>
         /// <response code="500">Internal server error.</response>
         [HttpPut("{id}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateItem(int id, [FromBody] UpdateItemDto itemDto)
         {
             // Check if the model state is valid
@@ -175,7 +175,7 @@ namespace InventoryManagementSystem.Web.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
 
@@ -188,9 +188,9 @@ namespace InventoryManagementSystem.Web.Controllers
         /// <response code="404">Item not found.</response>
         /// <response code="500">Internal server error.</response>
         [HttpDelete("{id}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteItem(int id)
         {
             try
@@ -206,7 +206,7 @@ namespace InventoryManagementSystem.Web.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
     }

@@ -30,8 +30,8 @@ namespace InventoryManagementSystem.Web.Controllers
         /// <response code="200">Returns the list of categories</response>
         /// <response code="500">If an internal server error occurs</response>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<CategoryDto>), 200)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllCategories()
         {
             try
@@ -49,7 +49,7 @@ namespace InventoryManagementSystem.Web.Controllers
             catch (Exception ex)
             {
                 // Log exception
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
 
@@ -62,9 +62,9 @@ namespace InventoryManagementSystem.Web.Controllers
         /// <response code="404">If the category is not found</response>
         /// <response code="500">If an internal server error occurs</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(CategoryDto), 200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(CategoryDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCategoryById(int id)
         {
             try
@@ -84,7 +84,7 @@ namespace InventoryManagementSystem.Web.Controllers
             catch (Exception ex)
             {
                 // Log exception
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
 
@@ -97,9 +97,9 @@ namespace InventoryManagementSystem.Web.Controllers
         /// <response code="400">If the category data is invalid</response>
         /// <response code="500">If an internal server error occurs</response>
         [HttpPost]
-        [ProducesResponseType(typeof(TbCategory), 201)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(TbCategory), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto categoryDto)
         {
             if (!ModelState.IsValid)
@@ -117,7 +117,7 @@ namespace InventoryManagementSystem.Web.Controllers
             catch (Exception ex)
             {
                 // Log exception
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
 
@@ -132,10 +132,10 @@ namespace InventoryManagementSystem.Web.Controllers
         /// <response code="404">If the category is not found</response>
         /// <response code="500">If an internal server error occurs</response>
         [HttpPut("{id}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto categoryDto)
         {
             if (!ModelState.IsValid)
@@ -157,7 +157,7 @@ namespace InventoryManagementSystem.Web.Controllers
             catch (Exception ex)
             {
                 // Log exception
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
 
@@ -170,9 +170,9 @@ namespace InventoryManagementSystem.Web.Controllers
         /// <response code="404">If the category is not found</response>
         /// <response code="500">If an internal server error occurs</response>
         [HttpDelete("{id}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             try
@@ -189,7 +189,7 @@ namespace InventoryManagementSystem.Web.Controllers
             catch (Exception ex)
             {
                 // Log exception
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
     }
