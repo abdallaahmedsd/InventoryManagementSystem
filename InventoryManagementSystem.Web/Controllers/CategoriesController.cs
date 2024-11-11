@@ -48,7 +48,7 @@ namespace InventoryManagementSystem.Web.Controllers
             }
             catch (Exception ex)
             {
-                // Log exception (you can use a logging framework like Serilog or NLog here)
+                // Log exception
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
@@ -102,11 +102,11 @@ namespace InventoryManagementSystem.Web.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto categoryDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
-                if (categoryDto == null)
-                    return BadRequest();
-
                 var category = new TbCategory { Name = categoryDto.Name };
 
                 await _unitOfWork.Category.AddAsync(category);
@@ -138,6 +138,9 @@ namespace InventoryManagementSystem.Web.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto categoryDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
                 var category = await _unitOfWork.Category.GetByIdAsync(id);

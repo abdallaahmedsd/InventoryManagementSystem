@@ -111,8 +111,8 @@ namespace InventoryManagementSystem.Web.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> CreateItem([FromBody] CreateItemDto itemDto)
         {
-            if (itemDto == null)
-                return BadRequest("Item data is null.");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             try
             {
@@ -143,13 +143,19 @@ namespace InventoryManagementSystem.Web.Controllers
         /// <param name="itemDto">The updated item data.</param>
         /// <response code="204">Item updated successfully.</response>
         /// <response code="404">Item not found.</response>
+        /// <response code="400">Bad request.</response>
         /// <response code="500">Internal server error.</response>
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> UpdateItem(int id, [FromBody] UpdateItemDto itemDto)
         {
+            // Check if the model state is valid
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
                 var item = await _unitOfWork.Item.GetByIdAsync(id);
@@ -172,6 +178,7 @@ namespace InventoryManagementSystem.Web.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
 
         /// <summary>
         /// Deletes an item by ID.
