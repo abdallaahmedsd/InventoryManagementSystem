@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InventoryManagementSystem.Web</name>
+    </assembly>
+    <members>
+        <member name="T:InventoryManagementSystem.Web.Controllers.CategoriesController">
+            <summary>
+            Controller for managing category-related operations.
+            </summary>
+            <remarks>
+            This controller provides endpoints for performing CRUD operations on categories,
+            including retrieving all categories, getting a category by ID, creating, updating, and deleting categories.
+            </remarks>
+        </member>
+        <member name="M:InventoryManagementSystem.Web.Controllers.CategoriesController.GetAllCategories">
+            <summary>
+            Get all categories.
+            </summary>
+            <returns>A list of all categories with their item count.</returns>
+            <response code="200">Returns the list of categories</response>
+            <response code="500">If an internal server error occurs</response>
+        </member>
+        <member name="M:InventoryManagementSystem.Web.Controllers.CategoriesController.GetCategoryById(System.Int32)">
+            <summary>
+            Get a category by its ID.
+            </summary>
+            <param name="id">The ID of the category to retrieve.</param>
+            <returns>The category if found, otherwise a NotFound result.</returns>
+            <response code="200">Returns the category</response>
+            <response code="404">If the category is not found</response>
+            <response code="500">If an internal server error occurs</response>
+        </member>
+        <member name="M:InventoryManagementSystem.Web.Controllers.CategoriesController.CreateCategory(InventoryManagementSystem.Web.DTOs.CreateCategoryDto)">
+            <summary>
+            Create a new category.
+            </summary>
+            <param name="categoryDto">The category data to create.</param>
+            <returns>A CreatedAtAction result with the newly created category.</returns>
+            <response code="201">If the category is successfully created</response>
+            <response code="400">If the category data is invalid</response>
+            <response code="500">If an internal server error occurs</response>
+        </member>
+        <member name="M:InventoryManagementSystem.Web.Controllers.CategoriesController.UpdateCategory(System.Int32,InventoryManagementSystem.Web.DTOs.UpdateCategoryDto)">
+            <summary>
+            Update an existing category by its ID.
+            </summary>
+            <param name="id">The ID of the category to update.</param>
+            <param name="categoryDto">The updated category data.</param>
+            <returns>A NoContent result if the update was successful, or a NotFound result if the category does not exist.</returns>
+            <response code="204">If the category was successfully updated</response>
+            <response code="400">If the category data is invalid</response>
+            <response code="404">If the category is not found</response>
+            <response code="500">If an internal server error occurs</response>
+        </member>
+        <member name="M:InventoryManagementSystem.Web.Controllers.CategoriesController.DeleteCategory(System.Int32)">
+            <summary>
+            Delete a category by its ID.
+            </summary>
+            <param name="id">The ID of the category to delete.</param>
+            <returns>A NoContent result if the category was deleted, or a NotFound result if the category does not exist.</returns>
+            <response code="204">If the category was successfully deleted</response>
+            <response code="404">If the category is not found</response>
+            <response code="500">If an internal server error occurs</response>
+        </member>
+        <member name="T:InventoryManagementSystem.Web.Controllers.ItemsController">
+            <summary>
+            Controller for managing item-related operations.
+            </summary>
+            <remarks>
+            This controller provides endpoints for performing CRUD operations on items,
+            including retrieving all items, getting an item by ID, creating, updating, and deleting items.
+            </remarks>
+        </member>
+        <member name="M:InventoryManagementSystem.Web.Controllers.ItemsController.GetAllItems">
+            <summary>
+            Retrieves all items along with their associated categories.
+            </summary>
+            <returns>A list of item DTOs.</returns>
+            <response code="200">Returns the list of items.</response>
+            <response code="500">Internal server error.</response>
+        </member>
+        <member name="M:InventoryManagementSystem.Web.Controllers.ItemsController.GetItemById(System.Int32)">
+            <summary>
+            Retrieves a specific item by ID.
+            </summary>
+            <param name="id">The ID of the item.</param>
+            <returns>The requested item DTO.</returns>
+            <response code="200">Returns the requested item.</response>
+            <response code="404">Item not found.</response>
+            <response code="500">Internal server error.</response>
+        </member>
+        <member name="M:InventoryManagementSystem.Web.Controllers.ItemsController.CreateItem(InventoryManagementSystem.Web.DTOs.CreateItemDto)">
+            <summary>
+            Creates a new item.
+            </summary>
+            <param name="itemDto">The item data to create.</param>
+            <returns>The created item.</returns>
+            <response code="201">Item created successfully.</response>
+            <response code="400">Bad request.</response>
+            <response code="500">Internal server error.</response>
+        </member>
+        <member name="M:InventoryManagementSystem.Web.Controllers.ItemsController.UpdateItem(System.Int32,InventoryManagementSystem.Web.DTOs.UpdateItemDto)">
+            <summary>
+            Updates an existing item.
+            </summary>
+            <param name="id">The ID of the item to update.</param>
+            <param name="itemDto">The updated item data.</param>
+            <response code="204">Item updated successfully.</response>
+            <response code="404">Item not found.</response>
+            <response code="500">Internal server error.</response>
+        </member>
+        <member name="M:InventoryManagementSystem.Web.Controllers.ItemsController.DeleteItem(System.Int32)">
+            <summary>
+            Deletes an item by ID.
+            </summary>
+            <param name="id">The ID of the item to delete.</param>
+            <response code="204">Item deleted successfully.</response>
+            <response code="404">Item not found.</response>
+            <response code="500">Internal server error.</response>
+        </member>
+    </members>
+</doc>

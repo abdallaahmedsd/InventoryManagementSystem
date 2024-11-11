@@ -291,3 +291,4 @@ P:\GitHub\InventoryManagementSystem\InventoryManagementSystem.Web\obj\Debug\net8
 P:\GitHub\InventoryManagementSystem\InventoryManagementSystem.Web\obj\Debug\net8.0\InventoryManagementSystem.Web.pdb
 P:\GitHub\InventoryManagementSystem\InventoryManagementSystem.Web\obj\Debug\net8.0\InventoryManagementSystem.Web.genruntimeconfig.cache
 P:\GitHub\InventoryManagementSystem\InventoryManagementSystem.Web\obj\Debug\net8.0\ref\InventoryManagementSystem.Web.dll
+P:\GitHub\InventoryManagementSystem\InventoryManagementSystem.Web\bin\Debug\net8.0\InventoryManagementSystem.Web.xml

@@ -5,6 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryManagementSystem.Web.Controllers
 {
+    /// <summary>
+    /// Controller for managing category-related operations.
+    /// </summary>
+    /// <remarks>
+    /// This controller provides endpoints for performing CRUD operations on categories,
+    /// including retrieving all categories, getting a category by ID, creating, updating, and deleting categories.
+    /// </remarks>
     [ApiController]
     [Route("api/[controller]")]
     public class CategoriesController : ControllerBase
